@@ -7,6 +7,7 @@ import authRoutes from './routes/authRoute.js'
 import cors from 'cors'
 import categoryRoutes from './routes/categoryRoutes.js'
 import productRoutes from './routes/productRoutes.js'
+import path from "path"
 
 // import Razorpay from 'razorpay';
 
@@ -35,9 +36,9 @@ app.use(cors({
 
 
 app.use(bodyParser.json()); // Ensure this line is present
-
 app.use(express.json())
 app.use(morgan('dev'))
+app.use(express.static(path.join(__dirname, '../client/build')));
 
 //routes
 app.use('/api/v1/auth', authRoutes)
@@ -47,9 +48,13 @@ app.use('/api/v1/product', productRoutes)
 
 
 //rest api
-app.get('/', (req, res) => {
-    res.send('<h1>Welcome to eCommerce App</h1>');
-});
+// app.get('/', (req, res) => {
+//     res.send('<h1>Welcome to eCommerce App</h1>');
+// });
+
+app.use('*',function(req,res){
+    res.sendFile(path.join(__dirname, '../client/build/index.html'));
+})
 
 //razorpay
 // middlewares
